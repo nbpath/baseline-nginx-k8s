@@ -4,10 +4,6 @@ RUN set -eux; \
   usermod -u 10001 nginx \
   && groupmod -g 10001 nginx
 
-RUN set -eux; \
-  cd /usr/local/bin \
-  && sha256sum -c --strict --status /tmp/tini-amd64.sha256sum
-
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY default.conf /etc/nginx/conf.d/default.conf
 
