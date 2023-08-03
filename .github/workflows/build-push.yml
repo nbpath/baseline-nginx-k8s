@@ -2,8 +2,11 @@ name: Build and push image
 
 on:
   push:
+    tags:
+      - "v*.*.*"
+  pull_request:
     branches:
-      - main
+      - "main"
 
 jobs:
   build:
@@ -12,6 +15,12 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/secure-nginx-k8s
+          tags: type=semver,pattern={{major}}.{{minor}}
       - name: set up Docker buildx
         uses: docker/setup-buildx-action@v2
       - name: login to Docker hub
@@ -23,6 +32,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/secure-nginx-k8s:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
