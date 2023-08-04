@@ -20,4 +20,8 @@ spec:
       - image: nbpath/secure-nginx-k8s@sha256:ba01d4407193f12a6ced769d1b0a8797e1aaedb7e2f8545c54928340da99c39a
         imagePullPolicy: Always
         name: nginx
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
         
