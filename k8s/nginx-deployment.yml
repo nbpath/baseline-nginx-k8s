@@ -19,6 +19,16 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+      volumes:
+        - name: var-cache
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: var-run
+          emptyDir:
+            sizeLimit: 100Mi
+        - name: var-log
+          emptyDir:
+            sizeLimit: 500Mi
       containers:
       - image: nbpath/secure-nginx-k8s@sha256:ba01d4407193f12a6ced769d1b0a8797e1aaedb7e2f8545c54928340da99c39a
         imagePullPolicy: Always
@@ -35,6 +45,7 @@ spec:
           runAsNonRoot: true
           runAsUser: 10001
           runAsGroup: 10001
+          readOnlyRootFilesystem: true
           capabilities:
             drop:
               - ALL
@@ -55,4 +66,11 @@ spec:
             port: 80
           failureThreshold: 5
           periodSeconds: 3
+        volumeMounts:
+          - mountPath: /var/cache/nginx
+            name: var-cache
+          - mountPath: /var/run
+            name: var-run
+          - mountPath: /var/log/nginx/
+            name: var-log
         
