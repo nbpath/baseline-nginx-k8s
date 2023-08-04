@@ -16,6 +16,7 @@ spec:
       labels:
         app: nginx
     spec:
+      automountServiceAccountToken: false
       securityContext:
         seccompProfile:
           type: RuntimeDefault
