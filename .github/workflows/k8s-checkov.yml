@@ -1,6 +1,9 @@
 name: Checkov k8s scan
 
 on:
+  push:
+    branches:
+      - "main"
   pull_request:
     branches:
       - "main"
