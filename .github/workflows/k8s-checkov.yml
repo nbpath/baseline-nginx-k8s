@@ -11,6 +11,10 @@ on:
 jobs:
   scan:
     name: checkov k8s scan
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
